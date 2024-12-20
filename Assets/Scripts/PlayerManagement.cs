@@ -3,15 +3,32 @@ using UnityEngine;
 
 public class PlayerManagement : MonoBehaviour
 {
+    #region Hız Değişkenleri
+    
     public float acceleration = 5f;     // İvme
     public float maxSpeed = 10f;        // Maksimum hız
     public float deceleration = 10f;   // Yavaşlama (fren etkisi)
     private float currentSpeed = 0f;   // Şu anki hız
     private int moveDirection = 0;     // Hareket yönü: -1 (sol), 1 (sağ), 0 (durağan)
+    
+
+    #endregion
+
+    [SerializeField] private Colors playerColor = Colors.None;
+    [SerializeField] private Color[] colors;
+    [SerializeField] private Renderer playerRenderer;
+
+
+    private void Awake()
+    {
+        playerRenderer = GetComponent<Renderer>();
+    }
+
 
     void Update()
     {
         Move();
+        HandleColorChange();
     }
 
     void Move()
@@ -45,4 +62,50 @@ public class PlayerManagement : MonoBehaviour
         // Pozisyonu güncelle
         transform.position += new Vector3(currentSpeed * Time.deltaTime, 0, 0);
     }
+
+    // Karakterin tuşa bastıktan sonra renk değiştirmesi    
+    void HandleColorChange()  
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            playerColor = GetNextColor(playerColor, true);
+            SetColor();
+        } else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            playerColor = GetNextColor(playerColor, false);
+            SetColor();
+        }
+    }
+
+    // Enumlar arası yukarı aşağı geçişi sağlar
+    Colors GetNextColor(Colors current, bool isUp)
+    {
+        int firstColor = (int)Colors.Red;
+        int lastColor = (int)Colors.Yellow;
+
+        int currentIndex = (int)current;
+
+        if (isUp)
+        {
+            currentIndex = currentIndex - 1 < firstColor ? lastColor : currentIndex - 1;
+            
+        }
+        else
+        {
+            currentIndex = currentIndex + 1 > lastColor ? firstColor : currentIndex + 1;
+        }
+
+        return (Colors)currentIndex;
+    }
+    
+    
+    // Karaktere renk atamasını sağlar
+    void SetColor()
+    {
+        int ColorIndex = (int)playerColor;
+        
+        if(ColorIndex >= 0 && ColorIndex < colors.Length) playerRenderer.material.color = colors[ColorIndex];
+        else Debug.LogWarning("Renk atanamadı!");
+    }
+    
 }
