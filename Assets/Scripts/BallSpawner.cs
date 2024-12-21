@@ -6,20 +6,22 @@ using Random = UnityEngine.Random;
 public class BallSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject ball;
-    [SerializeField] private PlayerManagement player;
-    [SerializeField] private float height;
-    [SerializeField] private float Time = 3.0f;
     [SerializeField] Transform[] spawnPoints;
     
     Coroutine spawnCoroutine;
     
     readonly WaitForSeconds delay = new WaitForSeconds(0.5f);
-    Vector3 spawnPoint = new Vector3(0, 4, 0);
+
+    private void Start()
+    {
+        spawnCoroutine = StartCoroutine(Spawner());
+    }
 
 
     void Spawn()
     {
-        var b = Instantiate(ball, spawnPoints[Random.Range(0, spawnPoints.Length)]);
+        int randomIndex = Random.Range(0, spawnPoints.Length);
+        var b = Instantiate(ball, spawnPoints[randomIndex].position, Quaternion.identity);
     }
     
     IEnumerator Spawner()

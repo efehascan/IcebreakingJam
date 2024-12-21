@@ -27,9 +27,19 @@ public class Balls : MonoBehaviour
         
         var Random = UnityEngine.Random.Range(0, enumMax);
         
-        ballColor = (Colors)Random;
+        ballColor = (Colors)(Random);
         
         renderer.material.color = colors[(int)ballColor];
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Destroy(this.gameObject);
+            
+            
+        }
     }
 }
 
