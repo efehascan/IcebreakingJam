@@ -25,11 +25,11 @@ public class Balls : MonoBehaviour
     {
         int enumMax = Enum.GetValues(typeof(Colors)).Length;
         
-        var Random = UnityEngine.Random.Range(0, enumMax);
+        var random = UnityEngine.Random.Range(0, enumMax);
         
-        ballColor = (Colors)(Random);
+        ballColor = (Colors)random;
         
-        renderer.material.color = colors[(int)ballColor];
+        renderer.material.color = colors[random];
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -37,8 +37,6 @@ public class Balls : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             Destroy(this.gameObject);
-            
-            
         }
     }
 }
