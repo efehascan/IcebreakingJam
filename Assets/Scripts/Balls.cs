@@ -23,8 +23,7 @@ public class Balls : MonoBehaviour
     [ContextMenu("RandomColor")]
     void RandomcColor()
     {
-        int enumMax = Enum.GetValues(typeof(Colors)).Length;
-        
+        int enumMax = Enum.GetValues(typeof(Colors)).Length - 1;
         var random = UnityEngine.Random.Range(0, enumMax);
         
         ballColor = (Colors)random;
