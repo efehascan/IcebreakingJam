@@ -13,6 +13,7 @@ public class PlayerManagement : MonoBehaviour
     private float currentSpeed = 0f;   // Şu anki hız
     private int moveDirection = 0;     // Hareket yönü: -1 (sol), 1 (sağ), 0 (durağan)
     
+    
 
     #endregion
 
@@ -23,9 +24,12 @@ public class PlayerManagement : MonoBehaviour
     [SerializeField] private Renderer playerRenderer;
     #endregion
 
+    #region  Text & Score 
     
     public int score = 0;
     public TextMeshProUGUI scoreText;
+    
+    #endregion
 
     private void Awake()
     {
@@ -36,7 +40,7 @@ public class PlayerManagement : MonoBehaviour
     void Update()
     {
         Move();
-        HandleColorChange();
+        OnHandleColorChange();
         
         scoreText.text = "Score: " + score.ToString();
     }
@@ -74,7 +78,7 @@ public class PlayerManagement : MonoBehaviour
     }
 
     // Karakterin tuşa bastıktan sonra renk değiştirmesi    
-    void HandleColorChange()  
+    void OnHandleColorChange()  
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -117,7 +121,7 @@ public class PlayerManagement : MonoBehaviour
         else Debug.LogWarning("Renk atanamadı!");
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         try
         {
