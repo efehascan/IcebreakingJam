@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class Balls : MonoBehaviour
 {
-    [SerializeField] private Colors ballColor = Colors.None;
+    [SerializeField] public Colors ballColor = Colors.None;
     [SerializeField] private Color[] colors;
     [SerializeField] private Renderer renderer;
 

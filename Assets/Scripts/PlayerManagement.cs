@@ -1,5 +1,7 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManagement : MonoBehaviour
 {
@@ -14,10 +16,16 @@ public class PlayerManagement : MonoBehaviour
 
     #endregion
 
+
+    #region Player Color Değişimleri
     [SerializeField] private Colors playerColor = Colors.None;
     [SerializeField] private Color[] colors;
     [SerializeField] private Renderer playerRenderer;
+    #endregion
 
+    
+    public int score = 0;
+    public TextMeshProUGUI scoreText;
 
     private void Awake()
     {
@@ -29,6 +37,8 @@ public class PlayerManagement : MonoBehaviour
     {
         Move();
         HandleColorChange();
+        
+        scoreText.text = "Score: " + score.ToString();
     }
 
     void Move()
@@ -98,7 +108,6 @@ public class PlayerManagement : MonoBehaviour
         return (Colors)currentIndex;
     }
     
-    
     // Karaktere renk atamasını sağlar
     void SetColor()
     {
@@ -107,5 +116,20 @@ public class PlayerManagement : MonoBehaviour
         if(ColorIndex >= 0 && ColorIndex < colors.Length) playerRenderer.material.color = colors[ColorIndex];
         else Debug.LogWarning("Renk atanamadı!");
     }
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        try
+        {
+            var ball = other.transform.GetComponent<Balls>();
+            if (playerColor == ball.ballColor) score++;
+            else score--;
+            
+            Destroy(other.gameObject);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
 }
