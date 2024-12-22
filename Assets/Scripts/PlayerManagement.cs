@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerManagement : MonoBehaviour
 {
@@ -17,7 +17,6 @@ public class PlayerManagement : MonoBehaviour
 
     #endregion
 
-
     #region Player Color Değişimleri
     [SerializeField] private Colors playerColor = Colors.None;
     [SerializeField] private Color[] colors;
@@ -30,6 +29,12 @@ public class PlayerManagement : MonoBehaviour
     public TextMeshProUGUI scoreText;
     
     #endregion
+    
+    [SerializeField] private GameObject objectRed;
+    [SerializeField] private GameObject objectBlue;
+    [SerializeField] private GameObject objectGreen;
+    [SerializeField] private GameObject objectYellow;
+    
 
     private void Awake()
     {
@@ -83,13 +88,56 @@ public class PlayerManagement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             playerColor = GetNextColor(playerColor, true);
-            SetColor();
+            EnumColorMatch();
+            
         } else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             playerColor = GetNextColor(playerColor, false);
-            SetColor();
+            EnumColorMatch();
         }
     }
+
+    void EnumColorMatch()
+    {
+        switch (playerColor)
+        {
+            case Colors.Red:
+                ShowObject(objectRed);
+                HideObject(objectBlue, objectGreen, objectYellow);
+                break;
+            case Colors.Blue:
+                ShowObject(objectBlue);
+                HideObject(objectRed, objectGreen, objectYellow);
+                break;
+            case Colors.Green:
+                ShowObject(objectGreen);
+                HideObject(objectRed, objectBlue, objectYellow);
+                break;
+            case Colors.Yellow:
+                ShowObject(objectYellow);
+                HideObject(objectRed, objectBlue, objectGreen);
+                break;
+            default:
+                HideObject(objectRed, objectBlue, objectGreen, objectYellow);
+                break;
+        }
+    }
+    
+    // Objeleri göster
+    void ShowObject(GameObject obj)
+    {
+        obj.SetActive(true);  // Objeyi aktif yap
+    }
+
+// Objeleri gizle
+    void HideObject(params GameObject[] objs)
+    {
+        foreach (var obj in objs)
+        {
+            obj.SetActive(false);  // Objeyi gizle
+        }
+    }
+
 
     // Enumlar arası yukarı aşağı geçişi sağlar
     Colors GetNextColor(Colors current, bool isUp)
@@ -113,6 +161,7 @@ public class PlayerManagement : MonoBehaviour
     }
     
     // Karaktere renk atamasını sağlar
+    
     void SetColor()
     {
         int ColorIndex = (int)playerColor;
@@ -120,6 +169,8 @@ public class PlayerManagement : MonoBehaviour
         if(ColorIndex >= 0 && ColorIndex < colors.Length) playerRenderer.material.color = colors[ColorIndex];
         else Debug.LogWarning("Renk atanamadı!");
     }
+    
+    
 
     private void OnCollisionEnter2D(Collision2D other)
     {

@@ -8,7 +8,7 @@ public class Balls : MonoBehaviour
     [SerializeField] private Color[] colors;
     [SerializeField] private Renderer renderer;
     
-    float moveSpeed = 1.5f;
+    float moveSpeed = 3f;
 
     private void Awake()
     {
@@ -18,6 +18,11 @@ public class Balls : MonoBehaviour
     private void Start()
     {
         RandomcColor();
+    }
+
+    private void Update()
+    {
+        Move();
     }
 
     public void Move()
@@ -35,16 +40,17 @@ public class Balls : MonoBehaviour
         
         ballColor = (Colors)random;
         
-        renderer.material.color = colors[random];
+        renderer.material.color = colors[random];   
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("MainCamera"))
+        if (other.gameObject.CompareTag("Ground"))
         {
             Destroy(this.gameObject);
         }
     }
+    
 }
 
 public enum Colors

@@ -10,7 +10,7 @@ public class BallSpawner : MonoBehaviour
     
     Coroutine spawnCoroutine;
     
-    readonly WaitForSeconds delay = new WaitForSeconds(0.5f);
+    readonly WaitForSeconds delay = new WaitForSeconds(1f);
 
     private void Start()
     {
