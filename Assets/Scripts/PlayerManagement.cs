@@ -135,5 +135,8 @@ public class PlayerManagement : MonoBehaviour
         {
             Console.WriteLine(e);
         }
+        
+        if (other.gameObject.CompareTag("Duvar"))
+            score = score - 10;
     }
 }
